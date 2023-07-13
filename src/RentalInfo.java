@@ -16,26 +16,32 @@ public class RentalInfo {
       double thisAmount = 0;
 
       // determine amount for each movie
-      if (movies.get(r.getMovieId()).getCode().equals("regular")) {
-        thisAmount = 2;
+      //cambio uso de switch 
+       switch (movies.get(r.getMovieId()).getCode()) {
+        case "regular":
+          thisAmount = 2;
         if (r.getDays() > 2) {
           thisAmount = ((r.getDays() - 2) * 1.5) + thisAmount;
         }
-      }
-      if (movies.get(r.getMovieId()).getCode().equals("new")) {
-        thisAmount = r.getDays() * 3;
-      }
-      if (movies.get(r.getMovieId()).getCode().equals("childrens")) {
-        thisAmount = 1.5;
+          break;
+       case "new" :
+          thisAmount = r.getDays() * 3;
+       break;
+       case "childrens" :
+          thisAmount = 1.5;
         if (r.getDays() > 3) {
           thisAmount = ((r.getDays() - 3) * 1.5) + thisAmount;
         }
-      }
-
+       break;
+        default:
+        //posibles casos que se puedan agregar ...
+          break;
+       }
       //add frequent bonus points
       frequentEnterPoints++;
       // add bonus for a two day new release rental
-      if (movies.get(r.getMovieId()).getCode() == "new" && r.getDays() > 2) frequentEnterPoints++;
+      //modificacion para mejora de code smell [.equals]
+      if (movies.get(r.getMovieId()).getCode().equals("new")  && r.getDays() > 2) frequentEnterPoints++;
 
       //print figures for this rental
       result += "\t" + movies.get(r.getMovieId()).getTitle() + "\t" + thisAmount + "\n";
